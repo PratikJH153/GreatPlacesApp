@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:greatplacesapp/views/add_place_page.dart';
+import 'package:greatplacesapp/views/places_list_page.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/great_places.dart';
 
 void main() => runApp(const MyApp());
 
@@ -7,15 +12,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "GreatPlacesApp",
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        colorScheme: ColorScheme.fromSwatch(
+    return ChangeNotifierProvider<GreatPlaces>(
+      create: (ctx) => GreatPlaces(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Great Places App",
+        theme: ThemeData(
           primarySwatch: Colors.indigo,
-          accentColor: Colors.amber,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.indigo,
+            accentColor: Colors.amber,
+          ),
         ),
+        initialRoute: PlacesListPage.routeName,
+        routes: {
+          PlacesListPage.routeName: (ctx) => const PlacesListPage(),
+          AddPlacePage.routeName: (ctx) => const AddPlacePage(),
+        },
       ),
     );
   }

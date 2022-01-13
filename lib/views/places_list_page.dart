@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:greatplacesapp/providers/great_places.dart';
+import 'package:greatplacesapp/views/add_place_page.dart';
+import 'package:provider/provider.dart';
 
 class PlacesListPage extends StatelessWidget {
+  static const routeName = "/";
   const PlacesListPage({Key? key}) : super(key: key);
 
   @override
@@ -10,13 +14,30 @@ class PlacesListPage extends StatelessWidget {
         title: const Text("Your Places"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () =>
+                Navigator.of(context).pushNamed(AddPlacePage.routeName),
             icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
+      body: Consumer<GreatPlaces>(
+        child: const Text("Got no places yet, Start adding some!"),
+        builder: (ctx, greatPlace, ch) => greatPlace.items.isEmpty
+            ? ch!
+            : ListView.builder(
+                itemCount: greatPlace.items.length,
+                itemBuilder: (ctx, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: FileImage(
+                        greatPlace.items[index].image,
+                      ),
+                    ),
+                    title: Text(greatPlace.items[index].title),
+                    onTap: () {},
+                  );
+                },
+              ),
       ),
     );
   }
