@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:greatplacesapp/providers/great_places.dart';
 import 'package:greatplacesapp/widgets/image_input.dart';
+import 'package:greatplacesapp/widgets/location_input.dart';
 import 'package:provider/provider.dart';
 
 class AddPlacePage extends StatefulWidget {
@@ -55,6 +56,10 @@ class _AddPlacePageState extends State<AddPlacePage> {
                       height: 10,
                     ),
                     ImageInput(_selectImage),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const LocationInput(),
                   ],
                 ),
               ),

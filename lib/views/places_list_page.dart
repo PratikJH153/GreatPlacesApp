@@ -20,24 +20,37 @@ class PlacesListPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<GreatPlaces>(
-        child: const Text("Got no places yet, Start adding some!"),
-        builder: (ctx, greatPlace, ch) => greatPlace.items.isEmpty
-            ? ch!
-            : ListView.builder(
-                itemCount: greatPlace.items.length,
-                itemBuilder: (ctx, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: FileImage(
-                        greatPlace.items[index].image,
-                      ),
-                    ),
-                    title: Text(greatPlace.items[index].title),
-                    onTap: () {},
-                  );
-                },
-              ),
+      body: FutureBuilder(
+        future: Provider.of<GreatPlaces>(context, listen: false)
+            .fetchAndSetPlaces(),
+        builder: (context, snapshot) {
+          return Consumer<GreatPlaces>(
+            child: const Center(
+              child: Text("Got no places yet, Start adding some!"),
+            ),
+            builder: (ctx, greatPlace, ch) =>
+                snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : greatPlace.items.isEmpty
+                        ? ch!
+                        : ListView.builder(
+                            itemCount: greatPlace.items.length,
+                            itemBuilder: (ctx, index) {
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: FileImage(
+                                    greatPlace.items[index].image,
+                                  ),
+                                ),
+                                title: Text(greatPlace.items[index].title),
+                                onTap: () {},
+                              );
+                            },
+                          ),
+          );
+        },
       ),
     );
   }
